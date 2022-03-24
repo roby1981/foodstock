@@ -1,0 +1,1 @@
+<h2>Produkte aus dem Bestand entfernen</h2>

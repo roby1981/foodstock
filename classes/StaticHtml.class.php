@@ -14,6 +14,7 @@ class StaticHtml {
         global $Database;
         global $request_method;
         global $filteredPost;
+        global $request_url_array;
         include($_SERVER["DOCUMENT_ROOT"]."/html/header.html");
         if(is_file($_SERVER["DOCUMENT_ROOT"]."/inc/$page.inc.php"))
         {

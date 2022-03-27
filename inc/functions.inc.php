@@ -38,4 +38,27 @@ function get_id() {
     global $request_url;
     return end(explode("/",$request_url));
 }
+
+function create_deletionlist($tablename, $name)
+{
+    global $Database;
+    $return='<ul>';
+    $result=$Database->query("SELECT id, $name FROM $tablename ORDER BY $name;");
+    while($data = $result->fetch_assoc())
+    {
+        $return.="<li><a onclick=\"return confirm('Den Eintrag inklusive entsprechendem Bestand l&ouml;schen?');\" href=\"/action/delete".$tablename."/".$data["id"]."\">".$data[$name]."</a></li>";
+    }
+    $return.="</ul>";
+    return $return;
+}
+
+function delete_from_database($table, $id) {
+    if(is_numeric($id))
+    {
+        global $Database;
+        $stmt = $Database->prepare("DELETE FROM $table WHERE id=?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+    }
+}
 ?>

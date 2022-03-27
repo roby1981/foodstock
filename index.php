@@ -8,25 +8,23 @@ require_once(__DIR__."/inc/errors.inc.php");
 //URL- und Methodenabfrage
 
 $request_url = filter_input(INPUT_SERVER, "REQUEST_URI", FILTER_SANITIZE_URL);
+$request_url_array = explode("/", $request_url);
 $request_method = $_SERVER["REQUEST_METHOD"];
 
 //Action - Routing
 if($request_method === "POST")
 {
-    $routes['/action/new_user'] = __DIR__.'/inc/new_user.inc.php';
-    $routes['/action/login'] = __DIR__.'/inc/login.inc.php';
-    
-    
+    $routes['new_user'] = __DIR__.'/inc/new_user.inc.php';
+    $routes['login'] = __DIR__.'/inc/login.inc.php';
+    $routes['change'] = __DIR__.'/inc/actionchangeproductbyid.inc.php';
+    $routes['create'] = __DIR__.'/inc/create_in_db.inc.php';
     $filteredPost=filter_input_array(INPUT_POST);
-    $product_change_pattern="/^\/action\/change?\/[0-9]*$/";
     
-    if(is_file($routes[$request_url]))
+    //$product_change_pattern[]="/^\/action\/change?\/[0-9]*$/";
+    
+    if(is_file($routes[$request_url_array[2]]))
     {
-        include ($routes[$request_url]);
-    }
-    elseif(preg_match($product_change_pattern, $request_url))
-    {
-        echo call_user_func($setPage("actionchangeproductbyid"));
+        include ($routes[$request_url_array[2]]);
     }
     else
     {
@@ -60,24 +58,26 @@ elseif(!isset($_SESSION["user"]))
 }
 else
 {
-    $product_change_pattern="/^(\/action)?\/change?\/[0-9]*$/";
+    // $product_change_pattern="/^(\/action)?\/change?\/[0-9]*$/";
     
-    $routes['/put'] = 'put';
-    $routes['/update'] = 'update';
-    $routes['/fetch'] = 'fetch';
-    $routes['/create'] = 'create';
-    $routes['/change'] = 'change';
-    $routes['/delete'] = 'delete';
-    $routes['/settings'] = 'settings';
-    $routes['/'] = 'start';
-    $routes['/action/login'] = 'start';
-    if(isset($routes[$request_url]))
+    $routes['put'] = 'put';
+    $routes['update'] = 'update';
+    $routes['fetch'] = 'fetch';
+    $routes['create'] = 'create';
+    $routes['change'] = 'change';
+    $routes['delete'] = 'deleteproduct';
+    $routes['settings'] = 'settings';
+    $routes[''] = 'start';
+    $routes['login'] = 'start';
+    $routes['deleteproducts'] = 'actiondeleteproductsbyid';
+    $routes['deletegeneric'] = 'actiondeletegenericbyid';
+    if(isset($routes[$request_url_array[1]]))
     {
-        echo call_user_func($setPage($routes[$request_url]));
+        echo call_user_func($setPage($routes[$request_url_array[1]]));
     }
-    elseif(preg_match($product_change_pattern, $request_url))
+    elseif(isset($routes[$request_url_array[2]]))
     {
-        echo call_user_func($setPage("changeproductbyid"));
+        echo call_user_func($setPage($routes[$request_url_array[2]]));
     }
     else
     {

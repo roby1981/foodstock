@@ -24,8 +24,8 @@ function show_radio_list($title, $value, $table, $selected=null) {
     $result = $Database->query("SELECT id, $value FROM $table;");
     while($data=$result->fetch_assoc())
     {
-        echo "<li><input type=\"radio\" name=\"".$table."\" value=\"".$data["id"]."\"";
-        if($selected==$data["id"])
+        echo "<li><input type=\"radio\" name=\"".$table."\" value=\"".$data["value"]."\"";
+        if($selected==$data["value"])
         {
             echo " checked=checked ";
         }
@@ -36,7 +36,8 @@ function show_radio_list($title, $value, $table, $selected=null) {
 
 function get_id() {
     global $request_url;
-    return end(explode("/",$request_url));
+    $id=explode("/",$request_url);
+    return end($id);
 }
 
 function create_deletionlist($tablename, $name)

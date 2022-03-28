@@ -1,1 +1,0 @@
-<h2>Produkte in Bestand aufnehmen</h2>

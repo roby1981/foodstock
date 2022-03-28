@@ -15,15 +15,29 @@ class StaticHtml {
         global $request_method;
         global $filteredPost;
         global $request_url_array;
-        include($_SERVER["DOCUMENT_ROOT"]."/html/header.html");
-        if(is_file($_SERVER["DOCUMENT_ROOT"]."/inc/$page.inc.php"))
+        
+        $include_path=$request_url_array[1];
+        $request_path="forms";
+        
+        if($request_method == "POST")
         {
-            include($_SERVER["DOCUMENT_ROOT"]."/inc/$page.inc.php");
+            $filtered_Post=filter_input_array(INPUT_POST, FILTER_DEFAULT);
+            print_r($filteredPost);
+            $request_path="actions";
+            die();
+        }
+        
+        $module_path=$_SERVER["DOCUMENT_ROOT"]."/inc/".$include_path."/".$request_path."/".$page.".inc.php";
+        include($_SERVER["DOCUMENT_ROOT"]."/html/header.html");
+        if(is_file($module_path))
+        {
+            include($module_path);
         }
         else
         {
-            echo "<p>Das Modul wurde nicht gefunden: $page";
+            echo "<p>Das Modul wurde nicht gefunden: ".$module_path;
         }
+        
         include($_SERVER["DOCUMENT_ROOT"]."/html/footer.html");
     }
 }

@@ -7,13 +7,14 @@ if((isset($request_url_array[2]) && is_numeric($request_url_array[2])) || (isset
     {
         echo $Database->error;
     }
-    $stmt->bind_param('i', get_id());
+    $id=get_id();
+    $stmt->bind_param('i', $id);
     $stmt->execute();
     $result=$stmt->get_result();
     $stmt->close();
     $data=$result->fetch_assoc();
 ?>
-<form action="/action/change/<?php echo get_id();?>" method="post">
+<form action="/products/update/<?php echo get_id();?>" method="post">
     <input type="text" name="name" value="<?php echo $data["name"];?>" placeholder="Produktname"><br>
     <?php
     show_radio_list("Oberbegriff", "value", "generic", $data["generic"]);
@@ -28,21 +29,13 @@ if((isset($request_url_array[2]) && is_numeric($request_url_array[2])) || (isset
 }
 else
 {
-?>
-<p>Produkt ausw&auml;hlen</p>
-<table>
-    <thead><tr><th>Name</th></tr></thead>
-    <tbody>
-<?php
+echo "<ul>";
 $sql="SELECT id, name FROM products;";
 $result=$Database->query($sql);
 while($data=$result->fetch_assoc())
 {
-       echo "<tr><td><a href=\"/change/".$data["id"]."\">".$data["name"]."</a></td></tr>\n";
+       echo "<li><a href=\"update/".$data["id"]."\">".$data["name"]."</a></li>\n";
 }
-?>
-    </tbody>
-</table>
-<?php
+echo "</ul>";
 }
 ?>

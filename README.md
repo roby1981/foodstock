@@ -21,6 +21,9 @@ Automatic decision how a measure is presented 1g or 1kg, 1ml or 1l
 
 ## Technical Specifications
 Webserver       Apache >2.2
+
 Script Language PHP > 7.0
+
 Database        MariaDB > 10.0
+
 OS              Debian Linux Bullseye

@@ -1,5 +1,5 @@
 <h2>Neues Produkt anlegen</h2>
-<form action="/action/create" method="post">
+<form action="/products/create" method="post">
     <input type="text" name="name" placeholder="Produktname"><br>
     <?php
     show_radio_list("Oberbegriff", "value", "generic");

@@ -62,4 +62,22 @@ function delete_from_database(string $table, int $id) {
         $stmt->execute();
     }
 }
+
+function drop_down_list(string $value, string $table, string $selected=null) {
+    global $Database;
+    $result = $Database->query("SELECT $value FROM $table;");
+    
+    $return="<select name=\"$table\"><option></option>";
+    while($data=$result->fetch_assoc())
+    {
+        $return.="<option";
+        if($data["$value"]==$selected)
+        {
+            echo " selected=\"selected\" ";
+        }
+        $return.=">".$data[$value]."</option>";
+    }
+    $return.="</select>";
+    echo $return;
+}
 ?>

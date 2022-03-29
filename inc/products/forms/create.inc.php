@@ -1,6 +1,3 @@
-<?php
-global $Database;
-?>
 <h2>Neues Produkt anlegen</h2>
 <form action="/action/create" method="post">
     <input type="text" name="name" placeholder="Produktname"><br>

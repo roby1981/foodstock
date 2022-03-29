@@ -38,6 +38,7 @@ class StaticHtml {
         {
             $post_request_path="actions";
             $action_module_path=str_replace($request_path, $post_request_path, $module_path);
+
             include($action_module_path);
             if($_SERVER["https"]=="on")
             {

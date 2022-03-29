@@ -37,7 +37,7 @@ else
     $routes['fetch'] = 'fetch';
     $routes['create'] = 'create';
     $routes['change'] = 'change';
-    $routes['delete'] = 'deleteproduct';
+    $routes['delete'] = 'delete';
     $routes['settings'] = 'settings';
     $routes[''] = 'start';
     $routes['login'] = 'start';

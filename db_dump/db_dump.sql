@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.5.12-MariaDB, for debian-linux-gnu (x86_64)
+-- MariaDB dump 10.19  Distrib 10.5.15-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: foodstock
 -- ------------------------------------------------------
--- Server version	10.5.12-MariaDB-0+deb11u1
+-- Server version	10.5.15-MariaDB-0+deb11u1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -111,16 +111,16 @@ CREATE TABLE `products` (
   `created` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `username` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`),
-  KEY `packaging` (`packaging`),
+  KEY `measures` (`measures`) USING BTREE,
+  KEY `username` (`username`) USING BTREE,
+  KEY `packaging` (`packaging`) USING BTREE,
   KEY `generic` (`generic`),
-  KEY `measures` (`measures`),
-  KEY `username` (`username`),
+  KEY `name` (`name`) USING BTREE,
   CONSTRAINT `generic` FOREIGN KEY (`generic`) REFERENCES `generic` (`value`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `measures` FOREIGN KEY (`measures`) REFERENCES `measures` (`value`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `packaging` FOREIGN KEY (`packaging`) REFERENCES `packaging` (`value`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `username` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +129,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (7,'Bananen','Pizza','Frisch','Gramm',1000,14,'2022-03-28 12:27:50','roby1981'),(8,'Nudeln','Sonstiges','Getrocknet','Gramm',5000,365,'2022-03-28 11:46:46','roby1981');
+INSERT INTO `products` VALUES (7,'Bananen','Pizza','Frisch','Gramm',1000,14,'2022-03-29 11:11:34','roby1981'),(32,'Bohnen','Sonstiges','TK-Ware','Gramm',3000,730,'2022-03-29 23:10:05','roby1981'),(38,'Reis','Sonstiges','Getrocknet','Gramm',25000,3650,'2022-03-29 23:08:30','roby1981');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,6 +144,7 @@ CREATE TABLE `stock` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `product` varchar(255) NOT NULL,
   `amount` int(11) NOT NULL,
+  `exp_date` date NOT NULL,
   `user` varchar(255) NOT NULL,
   `date` date NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
@@ -151,7 +152,7 @@ CREATE TABLE `stock` (
   KEY `user` (`user`),
   CONSTRAINT `product` FOREIGN KEY (`product`) REFERENCES `products` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `user` FOREIGN KEY (`user`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,7 +161,7 @@ CREATE TABLE `stock` (
 
 LOCK TABLES `stock` WRITE;
 /*!40000 ALTER TABLE `stock` DISABLE KEYS */;
-INSERT INTO `stock` VALUES (1,'Nudeln',3,'roby1981','2022-03-28'),(2,'Bananen',3,'roby1981','2022-03-28');
+INSERT INTO `stock` VALUES (2,'Bananen',3,'0000-00-00','roby1981','2022-03-09'),(11,'Bohnen',2,'2024-03-29','roby1981','2022-03-30'),(12,'Reis',1,'2032-03-27','roby1981','2022-03-30');
 /*!40000 ALTER TABLE `stock` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -176,6 +177,9 @@ SET character_set_client = utf8;
   `product` tinyint NOT NULL,
   `amount` tinyint NOT NULL,
   `measure` tinyint NOT NULL,
+  `shortcut` tinyint NOT NULL,
+  `resizeable` tinyint NOT NULL,
+  `packaging` tinyint NOT NULL,
   `generic` tinyint NOT NULL,
   `basic_amount` tinyint NOT NULL,
   `user` tinyint NOT NULL,
@@ -227,7 +231,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8mb4_unicode_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `survey_stock` AS select `stock`.`product` AS `product`,`stock`.`amount` AS `amount`,`products`.`measures` AS `measure`,`products`.`generic` AS `generic`,`products`.`basic_amount` AS `basic_amount`,`stock`.`user` AS `user`,`stock`.`date` AS `purchase_date`,`stock`.`amount` * `products`.`basic_amount` AS `full_amount`,`stock`.`date` + interval `products`.`durability` day AS `best_before_date` from (`stock` left join `products` on(`stock`.`product` = `products`.`name`)) where 1 */;
+/*!50001 VIEW `survey_stock` AS select `stock`.`product` AS `product`,`stock`.`amount` AS `amount`,`products`.`measures` AS `measure`,`measures`.`shortcut` AS `shortcut`,`measures`.`resizeable` AS `resizeable`,`packaging`.`value` AS `packaging`,`generic`.`value` AS `generic`,`products`.`basic_amount` AS `basic_amount`,`stock`.`user` AS `user`,`stock`.`date` AS `purchase_date`,`stock`.`amount` * `products`.`basic_amount` AS `full_amount`,`stock`.`exp_date` AS `best_before_date` from ((((`stock` left join `products` on(`stock`.`product` = `products`.`name`)) left join `measures` on(`measures`.`value` = `products`.`measures`)) left join `packaging` on(`packaging`.`value` = `products`.`packaging`)) left join `generic` on(`generic`.`value` = `products`.`generic`)) where 1 */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -241,4 +245,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-28 17:13:18
+-- Dump completed on 2022-03-30  1:16:03

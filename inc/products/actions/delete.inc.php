@@ -1,3 +1,3 @@
 <?php
-delete_from_database("products", $request_url_array[3]);
+    delete_from_database("products", $request_url_array[3]);
 ?>

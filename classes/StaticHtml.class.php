@@ -22,17 +22,10 @@ class StaticHtml {
         global $request_method;
         global $filteredPost;
         global $request_url_array;
+        global $request_url;
         
         $include_path=$request_url_array[1];
         $request_path="";
-        
-        if($request_method == "POST")
-        {
-            $filtered_Post=filter_input_array(INPUT_POST, FILTER_DEFAULT);
-            $request_path="actions";
-            ---> HIER MÜSSEN DOCH DIE SKRIPTE AUFGERUFEN UND DIE SEITE NEU GELADEN WERDEN!!!!
-        }
-        
         $module_path=$_SERVER["DOCUMENT_ROOT"]."/inc/";
         if(!empty($include_path))
         {
@@ -40,6 +33,23 @@ class StaticHtml {
             $request_path="forms";
         }
         $module_path.=$request_path."/".$page.".inc.php";
+        
+        if($request_method == "POST")
+        {
+            $post_request_path="actions";
+            $action_module_path=str_replace($request_path, $post_request_path, $module_path);
+            include($action_module_path);
+            if($_SERVER["https"]=="on")
+            {
+                $protocol="https://";
+            }
+            else
+            {
+                $protocol="http://";
+            }
+            header("Location: $protocoll$request_url");
+        }
+        
         include($_SERVER["DOCUMENT_ROOT"]."/html/header.html");
         if(is_file($module_path))
         {

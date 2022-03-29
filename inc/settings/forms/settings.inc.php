@@ -12,6 +12,7 @@ if(isset($request_url_array[2]) && array_key_exists($request_url_array[2], $chil
 }
 else
 {
+    echo "<ul>";
     foreach($children as $url => $name)
     {
         echo "<li><a href=\"".$request_url_array[1]."/$url\">$name</a></li>";

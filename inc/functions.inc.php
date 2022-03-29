@@ -47,7 +47,7 @@ function create_deletionlist(string $tablename, string $name)
     $result=$Database->query("SELECT id, $name FROM $tablename ORDER BY $name;");
     while($data = $result->fetch_assoc())
     {
-        $return.="<li><a onclick=\"return confirm('Den Eintrag inklusive entsprechendem Bestand l&ouml;schen?');\" href=\"/action/delete".$tablename."/".$data["id"]."\">".$data[$name]."</a></li>";
+        $return.="<li><a onclick=\"return confirm('Den Eintrag inklusive entsprechendem Bestand l&ouml;schen?');\" href=\"/$tablename/delete/".$data["id"]."\">".$data[$name]."</a></li>";
     }
     $return.="</ul>";
     return $return;

@@ -12,11 +12,11 @@ require_once(__DIR__."/inc/errors.inc.php");
 $request_url = filter_input(INPUT_SERVER, "REQUEST_URI", FILTER_SANITIZE_URL);
 $request_url_array = explode("/", $request_url);
 $request_method = $_SERVER["REQUEST_METHOD"];
+if($request_method=="POST")
+{
+    $filteredPost=filter_input_array(INPUT_POST , $_POST, FILTER_DEFAULT);
+}
 
-   
-
-//Render-Routing
-//
 //Check, ob User in DB vorhanden --> Wenn nicht, Initialisierung
 
 $stmt=$Database->query("SELECT username FROM users");

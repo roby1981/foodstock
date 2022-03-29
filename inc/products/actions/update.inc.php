@@ -7,6 +7,7 @@ if(!$stmt)
 }
 $id=get_id();
 print_r($filteredPost);
+die();
 $stmt->bind_param("ssssiisi", $filteredPost["name"], $filteredPost["generic"], $filteredPost["packaging"], $filteredPost["measures"], $filteredPost["basic_amount"], $filteredPost["durability"], $_SESSION["user"]["username"], $id);
 $stmt->execute();
 $_SESSION["message"]["info"][]="Das Produkt wurde aktualisiert.";

@@ -11,13 +11,13 @@ $login = function() {
     unset($Html);
 };
 
-$setPage = function($page) {
+$setPage = function(string $page) {
     $Html = new StaticHTML();
     $Html->renderMain($page);
     unset($Html);
 };
 
-function show_radio_list($title, $value, $table, $selected=null) {
+function show_radio_list(string $title, string $value, string $table, string $selected=null) {
     global $Database;
     echo "<label for=\"".$table."[]\">$title</label>";
     echo "<ul>";
@@ -40,7 +40,7 @@ function get_id() {
     return end($id);
 }
 
-function create_deletionlist($tablename, $name)
+function create_deletionlist(string $tablename, string $name)
 {
     global $Database;
     $return='<ul>';
@@ -53,7 +53,7 @@ function create_deletionlist($tablename, $name)
     return $return;
 }
 
-function delete_from_database($table, $id) {
+function delete_from_database(string $table, int $id) {
     if(is_numeric($id))
     {
         global $Database;

@@ -13,6 +13,11 @@ if((isset($request_url_array[2]) && is_numeric($request_url_array[2])) || (isset
     $result=$stmt->get_result();
     $stmt->close();
     $data=$result->fetch_assoc();
+    if(!is_array($data))
+    {
+        echo "<p>Das Produkt wurde nicht gefunden.</p>";
+        die();
+    }
 ?>
 <form action="/products/update/<?php echo get_id();?>" method="post">
     <input type="text" name="name" value="<?php echo $data["name"];?>" placeholder="Produktname"><br>

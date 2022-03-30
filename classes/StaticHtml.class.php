@@ -9,10 +9,14 @@ class StaticHtml {
         if($request_method == "POST")
         {
             include(include($_SERVER["DOCUMENT_ROOT"]."/inc/login.inc.php"));
+            header("Location:http://".$_SERVER["HTTP_HOST"]);
         }
         include($_SERVER["DOCUMENT_ROOT"]."/html/login.html");
     }
 
+    public function renderLogout() {
+        include($_SERVER["DOCUMENT_ROOT"]."/inc/logout.inc.php");
+    }
     public function renderNewUser() {
         include($_SERVER["DOCUMENT_ROOT"]."/html/firstuser.html");
     }
@@ -52,6 +56,11 @@ class StaticHtml {
         }
         
         include($_SERVER["DOCUMENT_ROOT"]."/html/header.html");
+        if($include_path==="logout")
+        {
+            include($_SERVER["DOCUMENT_ROOT"]."/inc/logout.inc.php");
+            header("Location:http://".$_SERVER["HTTP_HOST"]);
+        }
         if(is_file($module_path))
         {
             include($module_path);

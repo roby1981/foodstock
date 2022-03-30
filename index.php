@@ -43,6 +43,7 @@ else
     $routes['login'] = 'start';
     $routes['deleteproducts'] = 'delete';
     $routes['deletegeneric'] = 'delete';
+    
     if(isset($routes[$request_url_array[1]]))
     {
         echo $setPage($routes[$request_url_array[1]]);

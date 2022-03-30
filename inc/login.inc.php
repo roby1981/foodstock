@@ -8,6 +8,7 @@ if(count($login)==2)
 {
     $_SESSION["user"]["id"]=$login["id"];
     $_SESSION["user"]["username"]=$login["username"];
+    header("Location:http://".$_SERVER["HTTP_HOST"]);
 }
 else
 {

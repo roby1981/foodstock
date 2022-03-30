@@ -45,6 +45,10 @@ function create_deletionlist(string $tablename, string $name)
     global $Database;
     $return='<ul>';
     $result=$Database->query("SELECT id, $name FROM $tablename ORDER BY $name;");
+    if(!$result)
+    {
+        echo $Database->error;
+    }
     while($data = $result->fetch_assoc())
     {
         $return.="<li><a onclick=\"return confirm('Den Eintrag inklusive entsprechendem Bestand l&ouml;schen?');\" href=\"/$tablename/delete/".$data["id"]."\">".$data[$name]."</a></li>";
@@ -79,5 +83,20 @@ function drop_down_list(string $value, string $table, string $selected=null) {
     }
     $return.="</select>";
     echo $return;
+}
+
+function resize(int $amount)
+{
+    if($amount >= 1000)
+    {
+        $amount/=1000;
+        $amount.="k";
+    }
+    elseif($amount < 1)
+    {
+        $mount*=1000;
+        $amount.="m";
+    }
+    return $amount;
 }
 ?>

@@ -43,6 +43,7 @@ function get_id() {
 function create_deletionlist(string $tablename, string $name)
 {
     global $Database;
+    global $request_url;
     $return='<ul>';
     $result=$Database->query("SELECT id, $name FROM $tablename ORDER BY $name;");
     if(!$result)
@@ -51,7 +52,7 @@ function create_deletionlist(string $tablename, string $name)
     }
     while($data = $result->fetch_assoc())
     {
-        $return.="<li><a onclick=\"return confirm('Den Eintrag inklusive entsprechendem Bestand l&ouml;schen?');\" href=\"/$tablename/delete/".$data["id"]."\">".$data[$name]."</a></li>";
+        $return.="<li><a onclick=\"return confirm('Den Eintrag inklusive entsprechendem Bestand l&ouml;schen?');\" href=\"$request_url/delete/".$data["id"]."\">".$data[$name]."</a></li>";
     }
     $return.="</ul>";
     return $return;

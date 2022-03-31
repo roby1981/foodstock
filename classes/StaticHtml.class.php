@@ -27,34 +27,52 @@ class StaticHtml {
         global $filteredPost;
         global $request_url_array;
         global $request_url;
+        $keys=count($request_url_array);
         
-        $include_path=$request_url_array[1];
+        $include_path=$request_url_array[$keys-2];
+        $action_page=$request_url_array[$keys-1];
+        
+        if(is_numeric($request_url_array[$keys-1]))
+        {
+            $include_path=$request_url_array[$keys-3];
+            $action_page=$request_url_array[$keys-2];
+        }
+        
         $request_path="";
+        if(empty($include_path))
+        {
+            $include_path=$action_page;
+        }
         $module_path=$_SERVER["DOCUMENT_ROOT"]."/inc/";
         if(!empty($include_path))
         {
             $module_path.=$include_path."/";
-            $request_path="forms";
+            $request_path.="forms";
         }
         $module_path.=$request_path."/".$page.".inc.php";
         
+        if(!is_file($module_path))
+        {
+            $module_path=$_SERVER["DOCUMENT_ROOT"]."/inc/$include_path/forms/$action_page.inc.php";
+        }
+
         if($request_method == "POST")
         {
             $post_request_path="actions";
             $action_module_path=str_replace($request_path, $post_request_path, $module_path);
 
-            include($action_module_path);
-            if($_SERVER["https"]=="on")
+            if(isset($_SERVER["HTTPS"]))
             {
-                $protocol="https://";
+                $protocoll="https:/";
             }
             else
             {
-                $protocol="http://";
+                $protocoll="http:/";
             }
-            header("Location: $protocoll$request_url");
+            include($action_module_path);
+            header("Location: http://".$_SERVER["HTTP_HOST"]."$request_url");
+            die();
         }
-        
         include($_SERVER["DOCUMENT_ROOT"]."/html/header.html");
         if($include_path==="logout")
         {

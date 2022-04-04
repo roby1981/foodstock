@@ -1,107 +1,76 @@
--- MariaDB dump 10.19  Distrib 10.5.15-MariaDB, for debian-linux-gnu (x86_64)
+-- phpMyAdmin SQL Dump
+-- version 5.1.1
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost    Database: foodstock
--- ------------------------------------------------------
--- Server version	10.5.15-MariaDB-0+deb11u1
+-- Host: localhost
+-- Erstellungszeit: 04. Apr 2022 um 16:35
+-- Server-Version: 10.5.15-MariaDB-0+deb11u1
+-- PHP-Version: 7.4.28
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `generic`
+-- Datenbank: `foodstock`
+--
+DROP DATABASE IF EXISTS `foodstock`;
+CREATE DATABASE IF NOT EXISTS `foodstock` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `foodstock`;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `generic`
 --
 
 DROP TABLE IF EXISTS `generic`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `generic` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `value` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `VALUE` (`value`),
-  UNIQUE KEY `value_2` (`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `id` int(11) NOT NULL,
+  `value` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `generic`
---
-
-LOCK TABLES `generic` WRITE;
-/*!40000 ALTER TABLE `generic` DISABLE KEYS */;
-INSERT INTO `generic` VALUES (3,'Pizza'),(4,'Sonstiges');
-/*!40000 ALTER TABLE `generic` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `measures`
+-- Tabellenstruktur für Tabelle `measures`
 --
 
 DROP TABLE IF EXISTS `measures`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `measures` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `value` varchar(255) NOT NULL,
   `shortcut` varchar(10) NOT NULL,
-  `resizeable` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `value` (`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `resizeable` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `measures`
---
-
-LOCK TABLES `measures` WRITE;
-/*!40000 ALTER TABLE `measures` DISABLE KEYS */;
-INSERT INTO `measures` VALUES (1,'Gramm','g',1),(2,'Liter','l',0);
-/*!40000 ALTER TABLE `measures` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `packaging`
+-- Tabellenstruktur für Tabelle `packaging`
 --
 
 DROP TABLE IF EXISTS `packaging`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `packaging` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `value` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `value` (`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `id` int(11) NOT NULL,
+  `value` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `packaging`
---
-
-LOCK TABLES `packaging` WRITE;
-/*!40000 ALTER TABLE `packaging` DISABLE KEYS */;
-INSERT INTO `packaging` VALUES (3,'Frisch'),(4,'Getrocknet'),(1,'Konserve'),(2,'TK-Ware');
-/*!40000 ALTER TABLE `packaging` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `products`
+-- Tabellenstruktur für Tabelle `products`
 --
 
 DROP TABLE IF EXISTS `products`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `products` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `generic` varchar(255) NOT NULL,
   `packaging` varchar(255) NOT NULL,
@@ -109,140 +78,186 @@ CREATE TABLE `products` (
   `basic_amount` int(11) NOT NULL,
   `durability` int(11) NOT NULL,
   `created` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `username` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `measures` (`measures`) USING BTREE,
-  KEY `username` (`username`) USING BTREE,
-  KEY `packaging` (`packaging`) USING BTREE,
-  KEY `generic` (`generic`),
-  KEY `name` (`name`) USING BTREE,
-  CONSTRAINT `generic` FOREIGN KEY (`generic`) REFERENCES `generic` (`value`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `measures` FOREIGN KEY (`measures`) REFERENCES `measures` (`value`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `packaging` FOREIGN KEY (`packaging`) REFERENCES `packaging` (`value`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `username` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `username` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `products`
---
-
-LOCK TABLES `products` WRITE;
-/*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (7,'Bananen','Pizza','Frisch','Gramm',1000,14,'2022-03-29 11:11:34','roby1981'),(32,'Bohnen','Sonstiges','TK-Ware','Gramm',3000,730,'2022-03-29 23:10:05','roby1981'),(38,'Reis','Sonstiges','Getrocknet','Gramm',25000,3650,'2022-03-29 23:08:30','roby1981');
-/*!40000 ALTER TABLE `products` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `stock`
+-- Tabellenstruktur für Tabelle `stock`
 --
 
 DROP TABLE IF EXISTS `stock`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stock` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `product` varchar(255) NOT NULL,
   `amount` int(11) NOT NULL,
   `exp_date` date NOT NULL,
   `user` varchar(255) NOT NULL,
-  `date` date NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `product` (`product`),
-  KEY `user` (`user`),
-  CONSTRAINT `product` FOREIGN KEY (`product`) REFERENCES `products` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `user` FOREIGN KEY (`user`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `date` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `stock`
+-- Stellvertreter-Struktur des Views `survey_stock`
+-- (Siehe unten für die tatsächliche Ansicht)
 --
+DROP VIEW IF EXISTS `survey_stock`;
+CREATE TABLE `survey_stock` (
+`id` int(11)
+,`product` varchar(255)
+,`amount` int(11)
+,`measure` varchar(255)
+,`shortcut` varchar(10)
+,`resizeable` tinyint(1)
+,`packaging` varchar(255)
+,`generic` varchar(255)
+,`basic_amount` int(11)
+,`user` varchar(255)
+,`purchase_date` date
+,`full_amount` bigint(21)
+,`best_before_date` date
+);
 
-LOCK TABLES `stock` WRITE;
-/*!40000 ALTER TABLE `stock` DISABLE KEYS */;
-INSERT INTO `stock` VALUES (2,'Bananen',3,'0000-00-00','roby1981','2022-03-09'),(11,'Bohnen',2,'2024-03-29','roby1981','2022-03-30'),(12,'Reis',1,'2032-03-27','roby1981','2022-03-30');
-/*!40000 ALTER TABLE `stock` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Temporary table structure for view `survey_stock`
---
-
-DROP TABLE IF EXISTS `survey_stock`;
-/*!50001 DROP VIEW IF EXISTS `survey_stock`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE TABLE `survey_stock` (
-  `product` tinyint NOT NULL,
-  `amount` tinyint NOT NULL,
-  `measure` tinyint NOT NULL,
-  `shortcut` tinyint NOT NULL,
-  `resizeable` tinyint NOT NULL,
-  `packaging` tinyint NOT NULL,
-  `generic` tinyint NOT NULL,
-  `basic_amount` tinyint NOT NULL,
-  `user` tinyint NOT NULL,
-  `purchase_date` tinyint NOT NULL,
-  `full_amount` tinyint NOT NULL,
-  `best_before_date` tinyint NOT NULL
-) ENGINE=MyISAM */;
-SET character_set_client = @saved_cs_client;
+-- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Tabellenstruktur für Tabelle `users`
 --
 
 DROP TABLE IF EXISTS `users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `last_login` datetime DEFAULT NULL,
-  `creation_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `creation_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `users`
+-- Struktur des Views `survey_stock`
 --
+DROP TABLE IF EXISTS `survey_stock`;
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'roby1981','*BDC70B9415EE0A475087A2ABAA23DE0CAC0AA277',NULL,'2022-03-23 15:14:35');
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP VIEW IF EXISTS `survey_stock`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `survey_stock`  AS SELECT `stock`.`id` AS `id`, `stock`.`product` AS `product`, `stock`.`amount` AS `amount`, `products`.`measures` AS `measure`, `measures`.`shortcut` AS `shortcut`, `measures`.`resizeable` AS `resizeable`, `packaging`.`value` AS `packaging`, `generic`.`value` AS `generic`, `products`.`basic_amount` AS `basic_amount`, `stock`.`user` AS `user`, `stock`.`date` AS `purchase_date`, `stock`.`amount`* `products`.`basic_amount` AS `full_amount`, `stock`.`exp_date` AS `best_before_date` FROM ((((`stock` left join `products` on(`stock`.`product` = `products`.`name`)) left join `measures` on(`measures`.`value` = `products`.`measures`)) left join `packaging` on(`packaging`.`value` = `products`.`packaging`)) left join `generic` on(`generic`.`value` = `products`.`generic`)) WHERE 1 ;
 
 --
--- Final view structure for view `survey_stock`
+-- Indizes der exportierten Tabellen
 --
 
-/*!50001 DROP TABLE IF EXISTS `survey_stock`*/;
-/*!50001 DROP VIEW IF EXISTS `survey_stock`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_unicode_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `survey_stock` AS select `stock`.`product` AS `product`,`stock`.`amount` AS `amount`,`products`.`measures` AS `measure`,`measures`.`shortcut` AS `shortcut`,`measures`.`resizeable` AS `resizeable`,`packaging`.`value` AS `packaging`,`generic`.`value` AS `generic`,`products`.`basic_amount` AS `basic_amount`,`stock`.`user` AS `user`,`stock`.`date` AS `purchase_date`,`stock`.`amount` * `products`.`basic_amount` AS `full_amount`,`stock`.`exp_date` AS `best_before_date` from ((((`stock` left join `products` on(`stock`.`product` = `products`.`name`)) left join `measures` on(`measures`.`value` = `products`.`measures`)) left join `packaging` on(`packaging`.`value` = `products`.`packaging`)) left join `generic` on(`generic`.`value` = `products`.`generic`)) where 1 */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+--
+-- Indizes für die Tabelle `generic`
+--
+ALTER TABLE `generic`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `VALUE` (`value`),
+  ADD UNIQUE KEY `value_2` (`value`);
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+--
+-- Indizes für die Tabelle `measures`
+--
+ALTER TABLE `measures`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `value` (`value`);
+
+--
+-- Indizes für die Tabelle `packaging`
+--
+ALTER TABLE `packaging`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `value` (`value`);
+
+--
+-- Indizes für die Tabelle `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `measures` (`measures`) USING BTREE,
+  ADD KEY `username` (`username`) USING BTREE,
+  ADD KEY `packaging` (`packaging`) USING BTREE,
+  ADD KEY `generic` (`generic`),
+  ADD KEY `name` (`name`) USING BTREE;
+
+--
+-- Indizes für die Tabelle `stock`
+--
+ALTER TABLE `stock`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product` (`product`),
+  ADD KEY `user` (`user`);
+
+--
+-- Indizes für die Tabelle `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
+-- AUTO_INCREMENT für exportierte Tabellen
+--
+
+--
+-- AUTO_INCREMENT für Tabelle `generic`
+--
+ALTER TABLE `generic`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `measures`
+--
+ALTER TABLE `measures`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `packaging`
+--
+ALTER TABLE `packaging`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `stock`
+--
+ALTER TABLE `stock`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints der exportierten Tabellen
+--
+
+--
+-- Constraints der Tabelle `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `generic` FOREIGN KEY (`generic`) REFERENCES `generic` (`value`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `measures` FOREIGN KEY (`measures`) REFERENCES `measures` (`value`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `packaging` FOREIGN KEY (`packaging`) REFERENCES `packaging` (`value`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `username` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `stock`
+--
+ALTER TABLE `stock`
+  ADD CONSTRAINT `product` FOREIGN KEY (`product`) REFERENCES `products` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user` FOREIGN KEY (`user`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2022-03-30  1:16:03

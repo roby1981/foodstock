@@ -1,6 +1,6 @@
 <?php
-$stmt=$Database->prepare("SELECT id, username FROM users WHERE username=? AND password=PASSWORD(?);");
-$stmt->bind_param("ss", $filteredPost["username"], $filteredPost["password"]);
+$stmt=this::$Database->prepare("SELECT id, username FROM users WHERE username=? AND password=PASSWORD(?);");
+$stmt->bind_param("ss", this::$filteredPost["username"], this::$filteredPost["password"]);
 $stmt->execute();
 $result=$stmt->get_result();
 $login=$result->fetch_assoc();

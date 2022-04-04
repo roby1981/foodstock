@@ -1,3 +1,4 @@
 <?php
-delete_from_database("generic", $request_url_array[3]);
+if(is_numeric(end($request_url_array)))
+    delete_from_database("generic", end($request_url_array));
 ?>

@@ -1,23 +1,23 @@
 <?php
-$create_first_user = function() {
-    $Html= new StaticHtml();
+$create_first_user = function():string {
+    $Html= new StaticHtml($Database, $request_method, $filteredPost, $request_url_array, $request_url);
     $Html->renderNewUser();
     unset($Html);
 };
 
-$login = function() {
-    $Html = new StaticHtml();
+$login = function():void {
+    $Html = new StaticHtml($Database, $request_method, $filteredPost, $request_url_array, $request_url);
     $Html->renderLogin();
     unset($Html);
 };
 
-$setPage = function(string $page) {
-    $Html = new StaticHTML();
+$setPage = function(string $page, $Database, $request_method, $request_url_array, $request_url):void {
+    $Html = new StaticHTML($Database, $request_method, $request_url_array, $request_url);
     $Html->renderMain($page);
     unset($Html);
 };
 
-function show_radio_list(string $title, string $value, string $table, string $selected=null) {
+function show_radio_list(string $title, string $value, string $table, string $selected=null):void {
     global $Database;
     echo "<label for=\"".$table."[]\">$title</label>";
     echo "<ul>";
@@ -34,13 +34,13 @@ function show_radio_list(string $title, string $value, string $table, string $se
     echo "</ul>";
 };
 
-function get_id() {
+function get_id():int {
     global $request_url;
     $id=explode("/",$request_url);
     return end($id);
 }
 
-function create_deletionlist(string $tablename, string $name)
+function create_deletionlist(string $tablename, string $name):string
 {
     global $Database;
     global $request_url;
@@ -58,7 +58,7 @@ function create_deletionlist(string $tablename, string $name)
     return $return;
 }
 
-function delete_from_database(string $table, int $id) {
+function delete_from_database(string $table, int $id):void {
     if(is_numeric($id))
     {
         global $Database;
@@ -68,7 +68,7 @@ function delete_from_database(string $table, int $id) {
     }
 }
 
-function drop_down_list(string $value, string $table, string $selected=null) {
+function drop_down_list(string $value, string $table, string $selected=null): void{
     global $Database;
     $result = $Database->query("SELECT $value FROM $table;");
     
@@ -86,7 +86,7 @@ function drop_down_list(string $value, string $table, string $selected=null) {
     echo $return;
 }
 
-function resize(int $amount)
+function resize(int $amount):string
 {
     if($amount >= 1000)
     {

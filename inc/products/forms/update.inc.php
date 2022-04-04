@@ -2,10 +2,10 @@
 <?php
 if((isset($request_url_array[2]) && is_numeric($request_url_array[2])) || (isset($request_url_array[3]) && is_numeric($request_url_array[3])))
 {
-    $stmt=$Database->prepare("SELECT name, generic, packaging, measures, basic_amount, durability FROM products WHERE id=?;");
+    $stmt=self::$Database->prepare("SELECT name, generic, packaging, measures, basic_amount, durability FROM products WHERE id=?;");
     if(!$stmt)
     {
-        echo $Database->error;
+        echo self::$Database->error;
     }
     $id=get_id();
     $stmt->bind_param('i', $id);
@@ -36,7 +36,7 @@ else
 {
 echo "<ul>";
 $sql="SELECT id, name FROM products;";
-$result=$Database->query($sql);
+$result=self::$Database->query($sql);
 while($data=$result->fetch_assoc())
 {
        echo "<li><a href=\"update/".$data["id"]."\">".$data["name"]."</a></li>\n";

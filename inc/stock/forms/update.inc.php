@@ -2,7 +2,7 @@
 include($_SERVER["DOCUMENT_ROOT"]."/html/stock_top_menu.html");
 echo "<ul>";
 $sql="SELECT id, product, full_amount, shortcut, resizeable, purchase_date FROM survey_stock;";
-$result=$Database->query($sql);
+$result=self::$Database->query($sql);
 while($data=$result->fetch_assoc())
 {
     $full_amount=$data["full_amount"];
@@ -18,7 +18,7 @@ echo "</ul>";
 if(isset($request_url_array[3]) && is_numeric($request_url_array[3]))
 {
     $sql="SELECT product, amount, measure, shortcut, resizeable, packaging, generic, basic_amount, user, purchase_date, full_amount, best_before_date FROM survey_stock WHERE id = ?";
-    $stmt=$Database->prepare($sql);
+    $stmt=self::$Database->prepare($sql);
     $stmt->bind_param("i", $request_url_array[3]);
     $stmt->execute();
     $result=$stmt->get_result();

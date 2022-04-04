@@ -11,6 +11,6 @@ if(isset($request_url_array[4]) && is_numeric($request_url_array[3]))
 echo create_deletionlist("generic", "value");
 ?>
 <form action="http://<?=$_SERVER["HTTP_HOST"]?>/settings/generic/create" method="post">
-    <input type="text" placeholder="Neuer Oberbegriff">
+    <input type="text" placeholder="Neuer Oberbegriff" name="value">
     <input type="submit" value="Neuen Begriff eintragen">
 </form>

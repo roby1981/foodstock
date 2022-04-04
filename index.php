@@ -43,19 +43,13 @@ else
     $routes['login'] = 'start';
     $routes['deleteproducts'] = 'delete';
     $routes['deletegeneric'] = 'delete';
-    
-    if(isset($routes[$request_url_array[1]]))
+    if(isset($routes[end($request_url_array)]))
     {
-        echo $setPage($routes[$request_url_array[1]]);
-    }
-    elseif(isset($routes[$request_url_array[2]]))
-    {
-        
-        echo $setPage($routes[$request_url_array[2]]);
+        echo $setPage($routes[end($request_url_array)], $Database, $request_method, $request_url_array, $request_url);
     }
     else
     {
-        echo $setPage("notfound");
+        echo $setPage("notfound", $Database, $request_method, $request_url_array, $request_url);
     }
 }
 ?>

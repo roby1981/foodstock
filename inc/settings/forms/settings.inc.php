@@ -7,7 +7,7 @@ $children["packaging"]="Verpackungsformen";
 
 if(isset(self::$request_url_array[2]) && array_key_exists(self::$request_url_array[2], $children))
 {
-    echo "<h2>".$children[$request_url_array[2]]."</h2>";
+    echo "<h2>".$children[self::$request_url_array[2]]."</h2>";
     include($_SERVER["DOCUMENT_ROOT"]."/inc/".self::$request_url_array[2]."/forms/forms.inc.php");
 }
 else

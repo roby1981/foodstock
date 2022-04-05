@@ -8,5 +8,5 @@ if(isset($request_url_array[3]) && is_numeric($request_url_array[3]))
 
 <h2>Produkt aus Bestand entfernen</h2>
 <?php
-echo create_deletionlist("stock", "product");
+echo self::create_deletionlist("stock", "product");
 ?>

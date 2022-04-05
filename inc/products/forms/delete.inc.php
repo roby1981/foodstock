@@ -9,5 +9,5 @@ if(isset($request_url_array[3]) && is_numeric($request_url_array[3]))
 <h2>Produkt entfernen</h2>
 <p>Bitte zu entfernendes Produkt auswählen:</p>
 <?php
-echo create_deletionlist("products", "name");
+echo self::create_deletionlist("products", "name");
 ?>

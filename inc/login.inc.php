@@ -1,7 +1,8 @@
 <?php
-$stmt=this::$Database->prepare("SELECT id, username FROM users WHERE username=? AND password=PASSWORD(?);");
-$stmt->bind_param("ss", this::$filteredPost["username"], this::$filteredPost["password"]);
+$stmt=self::$Database->prepare("SELECT id, username FROM users WHERE username=? AND password=PASSWORD(?);");
+$stmt->bind_param("ss", self::$filteredPost["username"], self::$filteredPost["password"]);
 $stmt->execute();
+var_dump(self::$filteredPost);
 $result=$stmt->get_result();
 $login=$result->fetch_assoc();
 if(count($login)==2)

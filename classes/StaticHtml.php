@@ -6,6 +6,15 @@ class StaticHtml {
     public static $request_url;
     public static $request_url_array;
     
+    private static function delete_from_database(string $table, 
+                              int $id):void {
+        if(is_numeric($id))
+        {
+            $stmt = self::$Database->prepare("DELETE FROM $table WHERE id=?");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+        }
+        }
     private static function show_radio_list(string $title,
                          string $value,
                          string $table,

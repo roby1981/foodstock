@@ -1,6 +1,5 @@
 <?php
 class Router {
-
     public static $request_method;
     public static $request_url_array;
     public static $request_url;
@@ -29,10 +28,10 @@ class Router {
     function postModules():void {
         if(self::$request_method == "POST")
         {
-            $post_request_path="actions";
-            $action_module_path=str_replace($request_path, 
-                                            $post_request_path,
-                                            $module_path);
+            $action=end(self::$request_url_array);
+            $module=prev(self::$request_url_array);
+            $module_path=$_SERVER["DOCUMENT_ROOT"]."/inc/".$module."/actions/".$action.".inc.php";
+
             if(isset($_SERVER["HTTPS"]))
             {
                 $protocoll="https:/";
@@ -41,8 +40,12 @@ class Router {
             {
                 $protocoll="http:/";
             }
-            include($action_module_path);
-            header("Location: http://".$_SERVER["HTTP_HOST"].self::$request_url);
+            
+            if(!is_file($module_path))
+                die("Modul nicht gefunden");
+            
+            include($module_path);
+            header("Location: ".$_SERVER["HTTP_REFERER"]);
             die();
         }
 
@@ -52,37 +55,33 @@ class Router {
         $keys=count(self::$request_url_array);
         $include_path=self::$request_url_array[$keys-2];
         $action_page=self::$request_url_array[$keys-1];
-
+        $module_path=$_SERVER["DOCUMENT_ROOT"]."/inc/";
+        
         if(is_numeric(self::$request_url_array[$keys-1]))
         {
             $include_path=self::$request_url_array[$keys-3];
             $action_page=self::$request_url_array[$keys-2];
         }
-
-        $request_path="";
         
         if(empty($include_path) && !empty($action_page))
         {
             $include_path=$action_page;
         }
         
-        $module_path=$_SERVER["DOCUMENT_ROOT"]."/inc/";
-
         if(!empty($include_path))
         {
             $module_path.=$include_path."/";
-            $request_path.="forms";
         }
         
         if(array_search("delete", self::$request_url_array) && 
                 is_numeric(end(self::$request_url_array)))
         {
-            $module_path=$_SERVER["DOCUMENT_ROOT"]."/inc/$include_path/actions/$action_page.inc.php";
+            $module_path.="actions/$action_page.inc.php";
         }
 
-        if(self::$request_url=="/")
+        if("/" === self::$request_url)
         {
-            $module_path=$_SERVER["DOCUMENT_ROOT"]."/inc/$include_path/start.inc.php";
+            $module_path.="$include_path/start.inc.php";
         }
         
         if(!is_file($module_path))
@@ -90,13 +89,13 @@ class Router {
             $module_path=$_SERVER["DOCUMENT_ROOT"]."/inc/$include_path/forms/$action_page.inc.php";
         }
         
-        if($include_path==="logout")
+        if("logout" === $include_path)
         {
             include($_SERVER["DOCUMENT_ROOT"]."/inc/logout.inc.php");
             header("Location:http://".$_SERVER["HTTP_HOST"]);
             die();
         }
-
+        
         return $module_path;
     }
 }

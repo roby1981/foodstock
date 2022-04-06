@@ -6,7 +6,7 @@ $sql="INSERT INTO measures VALUES (null, ?, ?, ?)";
 $stmt=self::$Database->prepare($sql);
 if(!$stmt)
 {
-    echo $Database->error;
+    echo self::$Database->error;
     die();
 }
 $stmt->bind_param('ssi', $value, $shortcut, $resizeable);

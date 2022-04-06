@@ -1,5 +1,5 @@
 <?php
-$value=$filteredPost["value"];
+$value=self::$filteredPost["value"];
 $sql="INSERT INTO packaging VALUES (null, ?)";
 $stmt=self::$Database->prepare($sql);
 $stmt->bind_param('s', $value);

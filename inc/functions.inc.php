@@ -25,17 +25,6 @@ function get_id():int {
     return end($id);
 }
 
-function delete_from_database(string $table, 
-                              int $id):void {
-    if(is_numeric($id))
-    {
-        global $Database;
-        $stmt = $Database->prepare("DELETE FROM $table WHERE id=?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-    }
-}
-
 function resize(int $amount):string
 {
     if($amount >= 1000)

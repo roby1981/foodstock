@@ -2,9 +2,9 @@
 <form action="/products/create" method="post">
     <input type="text" name="name" placeholder="Produktname"><br>
     <?php
-    self::show_radio_list("Oberbegriff", "value", "generic");
-    self::show_radio_list("Verpackungsform", "value", "packaging");
-    self::show_radio_list("Maßeinheit", "value", "measures");
+    echo self::show_radio_list("Oberbegriff", "value", "generic");
+    echo self::show_radio_list("Verpackungsform", "value", "packaging");
+    echo self::show_radio_list("Maßeinheit", "value", "measures");
     ?>
     <input type="text" name="basic_amount" placeholder="Grundmenge"><br>
     <input type="text" name="durability" placeholder="Standard-Halbtbarkeit in Tagen"><br>

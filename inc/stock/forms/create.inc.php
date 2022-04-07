@@ -1,7 +1,7 @@
 <h2>Produkt in Bestand einf&uuml;gen</h2>
 <form action="/stock/create" method="post">
 <?php
-self::drop_down_list("name", "products");
+echo self::drop_down_list("name", "products");
 ?>
     <br>
     <input type="text" name="amount" placeholder="Anzahl"><br>

@@ -31,7 +31,6 @@ class Router {
             $action=end(self::$request_url_array);
             $module=prev(self::$request_url_array);
             $module_path=$_SERVER["DOCUMENT_ROOT"]."/inc/".$module."/actions/".$action.".inc.php";
-
             if(isset($_SERVER["HTTPS"]))
             {
                 $protocoll="https:/";
@@ -73,17 +72,24 @@ class Router {
             $module_path.=$include_path."/";
         }
         
-        if(array_search("delete", self::$request_url_array) && 
+        if(array_search("delete", self::$request_url_array) &&
                 is_numeric(end(self::$request_url_array)))
+                
         {
             $module_path.="actions/$action_page.inc.php";
+        }
+        if(array_search("update", self::$request_url_array) &&
+                is_numeric(end(self::$request_url_array)))
+                
+        {
+            $module_path.="forms/$action_page.inc.php";
         }
 
         if("/" === self::$request_url)
         {
             $module_path.="$include_path/start.inc.php";
         }
-        
+
         if(!is_file($module_path))
         {
             $module_path=$_SERVER["DOCUMENT_ROOT"]."/inc/$include_path/forms/$action_page.inc.php";
@@ -95,7 +101,6 @@ class Router {
             header("Location:http://".$_SERVER["HTTP_HOST"]);
             die();
         }
-        
         return $module_path;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-    if(is_numeric($request_url_array[3]))
+    if(is_numeric(self::$request_url_array[3]))
     {
         $sql="UPDATE survey_stock SET amount = ? WHERE id = ?";
         $stmt=self::$Database->prepare($sql);

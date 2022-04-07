@@ -14,7 +14,8 @@ class StaticHtml {
             $stmt->bind_param("i", $id);
             $stmt->execute();
         }
-        }
+    }
+    
     private static function show_radio_list(string $title,
                          string $value,
                          string $table,
@@ -91,7 +92,6 @@ class StaticHtml {
     
     public function renderMain(string $module_path):void {
         include($_SERVER["DOCUMENT_ROOT"]."/html/header.html");
-
         if(is_file($module_path))
         {
             include($module_path);

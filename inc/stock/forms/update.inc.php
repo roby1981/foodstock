@@ -1,4 +1,5 @@
 <?php
+$id=end(self::$request_url_array);
 include($_SERVER["DOCUMENT_ROOT"]."/html/stock_top_menu.html");
 echo "<ul>";
 $sql="SELECT id, product, full_amount, shortcut, resizeable, purchase_date FROM survey_stock;";
@@ -15,13 +16,14 @@ while($data=$result->fetch_assoc())
 }
 echo "</ul>";
 
-if(isset($request_url_array[3]) && is_numeric($request_url_array[3]))
+if(in_array("update", self::$request_url_array) && is_numeric($id))
 {
     $sql="SELECT product, amount, measure, shortcut, resizeable, packaging, generic, basic_amount, user, purchase_date, full_amount, best_before_date FROM survey_stock WHERE id = ?";
     $stmt=self::$Database->prepare($sql);
-    $stmt->bind_param("i", $request_url_array[3]);
+    $stmt->bind_param("i", $id);
     $stmt->execute();
     $result=$stmt->get_result();
+    
     $data=$result->fetch_assoc();
     if(!is_array($data))
     {

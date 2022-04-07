@@ -1,6 +1,6 @@
 <h2>Produkt &auml;ndern</h2>
 <?php
-if((isset($request_url_array[2]) && is_numeric($request_url_array[2])) || (isset($request_url_array[3]) && is_numeric($request_url_array[3])))
+if(in_array("update", self::$request_url_array) &&  is_numeric(end(self::$request_url_array)))
 {
     $stmt=self::$Database->prepare("SELECT name, generic, packaging, measures, basic_amount, durability FROM products WHERE id=?;");
     if(!$stmt)
@@ -22,9 +22,9 @@ if((isset($request_url_array[2]) && is_numeric($request_url_array[2])) || (isset
 <form action="/products/update/<?php echo get_id();?>" method="post">
     <input type="text" name="name" value="<?php echo $data["name"];?>" placeholder="Produktname"><br>
     <?php
-    show_radio_list("Oberbegriff", "value", "generic", $data["generic"]);
-    show_radio_list("Verpackungsform", "value", "packaging", $data["packaging"]);
-    show_radio_list("Maßeinheit", "value", "measures", $data["measures"]);
+        echo self::show_radio_list("Oberbegriff", "value", "generic", $data["generic"]);
+        echo self::show_radio_list("Verpackungsform", "value", "packaging", $data["packaging"]);
+        echo self::show_radio_list("Maßeinheit", "value", "measures", $data["measures"]);
     ?>
     <input type="text" name="basic_amount" placeholder="Grundmenge" value="<?php echo $data["basic_amount"];?>"><br>
     <input type="text" name="durability" placeholder="Standard-Halbtbarkeit in Tagen" value="<?php echo $data["durability"];?>"><br>

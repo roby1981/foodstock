@@ -94,7 +94,9 @@ class StaticHtml {
         include($_SERVER["DOCUMENT_ROOT"]."/html/header.html");
         if(is_file($module_path))
         {
+            echo "<main>";
             include($module_path);
+            echo "</main>";
         }
         else
         {
